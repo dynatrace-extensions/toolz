@@ -1,4 +1,5 @@
 # TODO: track tooling and Make in the same derivation
+.DEFAULT_GOAL := help
 
 # Porcelain
 # ###############
