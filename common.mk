@@ -47,7 +47,7 @@ activate: secrets/tenant secrets/token ## upload the configuration/activation
 
 # Plumbing
 # ###############
-.PHONY: setup gitclean gitclean-with-libs raw-run common_clean
+.PHONY: gitclean gitclean-with-libs raw-run common_clean
 
 extension.zip: $(SOURCES)
 	# TODO: remove dependency on certs and don't sign!
@@ -88,11 +88,6 @@ secrets/developer.key:
 	#
 	# the pipeline will now fail - acquire the file and try again
 	@false	
-
-raw-run:
-	$(RUN_CMD) | grep "MINT"
-
-setup:
 
 # TODO: fix this and push upstream
 gitclean:
