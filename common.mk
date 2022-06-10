@@ -104,3 +104,10 @@ gitclean-with-libs:
 # TODO: impelment for extension - does that even make sense?
 common_clean:
 
+.PHONY: help todo
+help: ## print this message
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+todo: ## list all TODOs in the project
+	git grep -I --line-number TODO | grep -v 'list all TODOs in the project' | grep TODO
+
