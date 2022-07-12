@@ -50,12 +50,11 @@ activate: secrets/tenant secrets/token ## upload the configuration/activation
 .PHONY: gitclean gitclean-with-libs raw-run common_clean
 
 extension.zip: $(SOURCES)
-	# TODO: remove dependency on certs and don't sign!
-	dt extension build --extension-directory src --certificate secrets/developer.pem --private-key secrets/developer.key --keep-intermediate-files --dev-passphrase ''
+	dt extension assemble --force
 
-bundle.zip: extension.zip
-	#zip $@ extension.zip extension.zip.sig
-	dt extension build --extension-directory src --certificate secrets/developer.pem --private-key secrets/developer.key --keep-intermediate-files --dev-passphrase '' | tail -n 2 | head -n 1 | cut -d'/' -f 2 | cut -d' ' -f 1 | xargs -I {} mv {} bundle.zip
+bundle.zip: extension.zip secrets/developer.pem
+	# TODO: move this to default and remove
+	dt extension sign --key secrets/developer.pem --force
 
 secrets/tenant:
 	# Please provide a tenant url
@@ -76,10 +75,6 @@ secrets/token:
 	./scripts/acquire-secret $@
 
 secrets/developer.pem:
-	# TODO: actually have a proper process for this
-	@echo "Not implemented"; false
-
-secrets/developer.key:
 	# for details:
 	# see https://www.dynatrace.com/support/help/extend-dynatrace/extensions20/sign-extension/	
 	# or
