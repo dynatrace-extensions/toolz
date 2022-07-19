@@ -35,6 +35,9 @@ build: extension.zip ## create artifact
 
 sign: bundle.zip ## sign the artifact
 
+lint: $(_ENTRYPOINT) ## run static analysis
+	dt ext validate-schema --instance $(_ENTRYPOINT) --schema-entrypoint $(shell dirname $$(which __dt_cluster_schema))/../schemas/extension.schema.json
+
 upload: secrets/tenant secrets/token bundle.zip ## upload the extension
 	curl -X POST "https://$(RETREIVE_TENANT)/api/v2/extensions" -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token $(RETREIVE_API_TOKEN)" -H "Content-Type: multipart/form-data" -F "file=@bundle.zip;type=application/x-zip-compressed" --silent | jq
 
